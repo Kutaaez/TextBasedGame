@@ -1,15 +1,18 @@
 package factory;
 
-public class FantasyMUDFactory implements IMUDAbstractFactory {
-    @Override
-    public IGameEntity createRoom() {
+import entitites.IGameEntity;
 
-        return null;
-    }
-
-    @Override
-    public IGameEntity createNPC() {
-        return null;
-
-    }
+public class FantasyMUDFactory {
+        //implements IMUDAbstractFactory {
+//    @Override
+//    public IGameEntity createRoom() {
+//
+//        return null;
+//    }
+//
+//    @Override
+//    public IGameEntity createNPC() {
+//        return null;
+//
+//    }
 }
