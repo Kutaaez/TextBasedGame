@@ -1,5 +1,11 @@
+package control;
+
+import entitites.Player;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        Player player = new Player("Zharaskhan");
+        MUDController gameController = new MUDController(player);
+        gameController.runGameLoop();
     }
 }

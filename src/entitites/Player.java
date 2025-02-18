@@ -32,4 +32,11 @@ public class Player {
     public List<Item> getPlayerInventory() {
         return playerInventory;
     }
+    public void addItemToInventory(Item item) {
+        playerInventory.add(item);
+    }
+
+    public void removeItemFromInventory(Item item) {
+        playerInventory.remove(item);
+    }
 }
