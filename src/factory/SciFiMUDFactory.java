@@ -1,4 +1,8 @@
-public class SafiMUDFactory implements  IMUDAbstractFactory{
+package factory;
+
+import factory.IMUDAbstractFactory;
+
+public class SciFiMUDFactory implements IMUDAbstractFactory {
     @Override
     public IGameEntity createRoom() {
         return null;

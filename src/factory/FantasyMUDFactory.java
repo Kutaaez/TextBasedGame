@@ -1,4 +1,6 @@
-public class FantasyMUDFactory implements  IMUDAbstractFactory{
+package factory;
+
+public class FantasyMUDFactory implements IMUDAbstractFactory {
     @Override
     public IGameEntity createRoom() {
 
