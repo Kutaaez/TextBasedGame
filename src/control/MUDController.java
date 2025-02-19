@@ -1,9 +1,6 @@
 package control;
 
-import entitites.IGameEntity;
-import entitites.Item;
-import entitites.Player;
-import entitites.Room;
+import entitites.*;
 import factory.FantasyMUDFactory;
 
 import java.util.List;
@@ -18,7 +15,8 @@ import java.util.Scanner;
 public class MUDController {
 
     private final Player player;
-    private Room room;
+    private Room currentRoom;
+    private Room previousRoom;
     FantasyMUDFactory fantasyMUDFactory = new FantasyMUDFactory();
     /**
      * Constructs the controller with a reference to the current player.
@@ -55,10 +53,17 @@ public class MUDController {
 
         switch (command) {
             case "fantasy":
-                room = (Room) fantasyMUDFactory.createRoom();
+                currentRoom = (Room) fantasyMUDFactory.createRoom();
                 break;
             case "look":
                 lookAround();
+                break;
+            case "attack":
+                attackNPC();
+                break;
+
+            case "talk":
+                talkToNPC(argument);
                 break;
             case "move":
                 move(argument);
@@ -89,7 +94,7 @@ public class MUDController {
      * Look around the current room: describe it and show items/NPCs.
      */
     private void lookAround() {
-        room.describe();
+        currentRoom.describe();
     }
 
     /**
@@ -99,30 +104,63 @@ public class MUDController {
         switch (direction) {
             case "forward":
                 System.out.println("You move forward into the next room.");
-                room = (Room) fantasyMUDFactory.createRoom();
+                if(currentRoom != null){
+                    previousRoom = currentRoom;
+                }
+                currentRoom = (Room) fantasyMUDFactory.createRoom();
                 break;
             case "back":
-                System.out.println("You move back to the previous room.");
-                room = (Room) fantasyMUDFactory.createRoom();
+                if(currentRoom != null){
+                    System.out.println("You move back to the previous room.");
+                    currentRoom = previousRoom;
+                }
                 break;
             case "left":
                 System.out.println("You turn left and walk into a new space.");
-                room = (Room) fantasyMUDFactory.createRoom();
+                if(currentRoom != null){
+                    previousRoom = currentRoom;
+                }
+                currentRoom = (Room) fantasyMUDFactory.createRoom();
+
                 break;
             case "right":
                 System.out.println("You turn right and find a new area.");
-                room = (Room) fantasyMUDFactory.createRoom();
+                if(currentRoom != null){
+                    previousRoom = currentRoom;
+                }
+                currentRoom = (Room) fantasyMUDFactory.createRoom();
                 break;
             default:
                 System.out.println("Invalid direction. Try 'forward', 'back', 'left', or 'right'.");
         }
     }
+    public void attackNPC(){
+        System.out.println("You are MONSTER!");
 
+        currentRoom.removeNPC(currentRoom.getRoomNPCs().get(0));
+    }
+    public void talkToNPC(String npcName) {
+        List<NPC>npcs = currentRoom.getRoomNPCs();
+
+        boolean npcFound = false;
+        for (NPC npc : npcs) {
+            if (npc.getNpcName().equalsIgnoreCase(npcName)) {
+                npcFound = true;
+                System.out.println("You talk to " + npc.getNpcName() + ".");
+                npc.speak();
+                break;
+            }
+        }
+
+        if (!npcFound) {
+            System.out.println("There's no NPC by the name '" + npcName + "' in this room.");
+        }
+    }
     /**
      * Pick up an item (e.g. "pick up sword").
      */
     private void pickUp(String itemName) {
-        List<Item> roomItems = room.getRoomItems();
+        List<Item> roomItems = currentRoom.getRoomItems();
 
         for (Item item : roomItems) {
             if (item.getItemName().equalsIgnoreCase(itemName)) {
@@ -154,10 +192,13 @@ public class MUDController {
     private void showHelp() {
         System.out.println("Available commands:");
         System.out.println("look - Describe the current room.");
+        System.out.println("talk <NPC> - Talk to the NPC in the room");
         System.out.println("move <forward|back|left|right> - Move in a direction.");
         System.out.println("pick up <item> - Pick up an item.");
         System.out.println("inventory - List the items you are carrying.");
         System.out.println("help - Show this help message.");
         System.out.println("quit / exit - End the game.");
+        System.out.println("attack - you can attack npc, but I strongly advise against doing so at the moment... ");
+
     }
 }
