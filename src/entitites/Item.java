@@ -1,10 +1,14 @@
 package entitites;
 
-public class Item implements  IGameEntity{
-    private String itemName;
+import entitites.IGameEntity;
 
-    public Item(String itemName) {
+public class Item implements IGameEntity {
+    private String itemName;
+    private String itemType;
+
+    public Item(String itemName, String itemType) {
         this.itemName = itemName;
+        this.itemType = itemType;
     }
 
     public String getItemName() {

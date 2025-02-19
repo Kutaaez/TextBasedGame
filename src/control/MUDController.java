@@ -1,8 +1,12 @@
 package control;
 
+import entitites.IGameEntity;
 import entitites.Item;
 import entitites.Player;
+import entitites.Room;
+import factory.FantasyMUDFactory;
 
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -14,7 +18,8 @@ import java.util.Scanner;
 public class MUDController {
 
     private final Player player;
-
+    private Room room;
+    FantasyMUDFactory fantasyMUDFactory = new FantasyMUDFactory();
     /**
      * Constructs the controller with a reference to the current player.
      */
@@ -29,7 +34,7 @@ public class MUDController {
     public void runGameLoop() {
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome the low text based game! Type 'help' for a list of commands");
+        System.out.println("Welcome the low text based game!\nPlease select the genre of the room. Sci-Fi or Fantasy.\nType 'help' for a list of commands");
         boolean running = true;
         while (running) {
             System.out.println("> ");
@@ -49,6 +54,9 @@ public class MUDController {
         String argument = parts.length > 1 ? parts[1] : "";
 
         switch (command) {
+            case "fantasy":
+                room = (Room) fantasyMUDFactory.createRoom();
+                break;
             case "look":
                 lookAround();
                 break;
@@ -81,7 +89,7 @@ public class MUDController {
      * Look around the current room: describe it and show items/NPCs.
      */
     private void lookAround() {
-        System.out.println("You are in a dark, eerie room. There are mysterious items scattered around.");
+        room.describe();
     }
 
     /**
@@ -91,15 +99,19 @@ public class MUDController {
         switch (direction) {
             case "forward":
                 System.out.println("You move forward into the next room.");
+                room = (Room) fantasyMUDFactory.createRoom();
                 break;
             case "back":
                 System.out.println("You move back to the previous room.");
+                room = (Room) fantasyMUDFactory.createRoom();
                 break;
             case "left":
                 System.out.println("You turn left and walk into a new space.");
+                room = (Room) fantasyMUDFactory.createRoom();
                 break;
             case "right":
                 System.out.println("You turn right and find a new area.");
+                room = (Room) fantasyMUDFactory.createRoom();
                 break;
             default:
                 System.out.println("Invalid direction. Try 'forward', 'back', 'left', or 'right'.");
@@ -110,9 +122,18 @@ public class MUDController {
      * Pick up an item (e.g. "pick up sword").
      */
     private void pickUp(String itemName) {
-        Item item = new Item(itemName);
-        System.out.println("You pick up the " + item + ".");
-        player.addItemToInventory(item);
+        List<Item> roomItems = room.getRoomItems();
+
+        for (Item item : roomItems) {
+            if (item.getItemName().equalsIgnoreCase(itemName)) {
+                System.out.println("You pick up the " + item.getItemName() + ".");
+                player.addItemToInventory(item);
+                roomItems.remove(item);
+                return;
+            }
+        }
+
+        System.out.println("There is no " + itemName + " in the room.");
     }
 
     /**

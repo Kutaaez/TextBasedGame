@@ -8,7 +8,6 @@ public class Room implements IGameEntity {
     private String roomName;
     private String roomDescription;
     private List<Item> roomItems;
-    private Map<String, Room> roomConnectedRooms;
 
     public Room(String roomName, String roomDescription) {
         this.roomName = roomName;
@@ -20,9 +19,7 @@ public class Room implements IGameEntity {
         return roomItems;
     }
 
-    public Map<String, Room> getRoomConnectedRooms() {
-        return roomConnectedRooms;
-    }
+
 
     public String getRoomName() {
         return roomName;
@@ -35,7 +32,7 @@ public class Room implements IGameEntity {
 
     @Override
     public void describe() {
-        System.out.println("You in the " + roomName + " be carefull, because this room famous  " + roomDescription);
+        System.out.println("You in the " + roomName + " be carefull, because this room famous  " + roomDescription + " " + listItems());
     }
     public void addItem(Item item ){
         roomItems.add(item);
