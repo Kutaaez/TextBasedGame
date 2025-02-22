@@ -31,16 +31,16 @@ public class MUDController {
      */
     public void runGameLoop() {
 
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome the low text based game!\nPlease select the genre of the room. Sci-Fi or Fantasy.\nType 'help' for a list of commands");
-        boolean running = true;
-        while (running) {
-            System.out.println("> ");
-            String input = scanner.nextLine().trim().toLowerCase();
-            running = handleInput(input);
-        }
-        System.out.println("Game stopped");
-        scanner.close();
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Welcome the low text based game!\nPlease select the genre of the room. Sci-Fi or Fantasy.\nType 'help' for a list of commands");
+            boolean running = true;
+            while (running) {
+                System.out.println("> ");
+                String input = scanner.nextLine().trim().toLowerCase();
+                running = handleInput(input);
+            }
+            System.out.println("Game stopped");
+            scanner.close();
     }
 
     /**
@@ -178,7 +178,7 @@ public class MUDController {
      * Check the player's inventory.
      */
     private void checkInventory() {
-        System.out.println("Player inventory: " + player.getPlayerInventory());
+
         if (player.getPlayerInventory().isEmpty()) {
             System.out.println("Your inventory is empty.");
         } else {
