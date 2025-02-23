@@ -1,0 +1,3 @@
+Задание Solution Homework 2 по ссылке
+https://github.com/Kutaaez/Solution-Homework-2/tree/main/src
+Т/к дедлайн уже закрытый...
